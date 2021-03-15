@@ -55,18 +55,21 @@
                 <v-text-field
                   label="Codigo"
                   required
+                  v-model="form.codigo"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="Nome"
                   required
+                  v-model="form.nome"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="Tamanho"
                   required
+                  v-model="form.tamanho"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -80,14 +83,14 @@
             text
             @click="dialog = false"
           >
-            Close
+            Fechar
           </v-btn>
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="this.salvarProdutos"
           >
-            Save
+            Salvar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -106,6 +109,11 @@
       search: '',
       dialog: false,
       listaDeProdutos: [],
+      form: {
+        codigo: '',
+        nome: '',
+        tamanho: ''
+      },
       headers: [
           { text: 'Codigo', value: 'codigo' },
           { text: 'Nome', value: 'nome' },
@@ -115,8 +123,12 @@
 
     methods: {
       async listaProdutos() {
-          let response = await ProdutoService.carregarProduto()
-         this.listaDeProdutos = response.data
+          let response = await ProdutoService.listaProdutos()
+          this.listaDeProdutos = response.data
+      },
+      async salvarProdutos() {
+        this.dialog = false
+        ProdutoService.salvarProdutos(this.form)
       }
     },
 
