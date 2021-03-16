@@ -8,7 +8,6 @@ export const ProdutoService = {
     },
 
     salvarProdutos: (form) => {
-       console.log(form);
        axios.post('http://localhost:8888/produtos', form)
     }
     

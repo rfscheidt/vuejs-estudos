@@ -33,7 +33,29 @@
             :headers="headers"
             :items="listaDeProdutos"
             :search="search"
-          ></v-data-table>
+          >
+            <template
+              slot="headerCell"
+              slot-scope="{ header }"
+              >
+              <span
+              class="subheading font-weight-light text-success text--darken-3"
+              v-text="header.text"
+              />
+              </template>
+              <template
+              slot="listaDeProdutos"
+              slot-scope="{ item }"
+              >
+              <td>{{ item.name }}</td>
+              <td>
+              <v-icon left @click="openDialogChats(item.user)">mdi-message-reply-text</v-icon>
+              <v-icon left @click="edit(item.id)">mdi-account-edit</v-icon>
+              <v-icon left @click="remove(item.id)">mdi-account-remove</v-icon>
+              <v-icon left @click="openDialogSendMessage(item.user)">mdi-arrow-top-right-bold-outline</v-icon>
+              </td>
+              </template>
+          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -117,7 +139,8 @@
       headers: [
           { text: 'Codigo', value: 'codigo' },
           { text: 'Nome', value: 'nome' },
-          { text: 'tamanho', value: 'tamanho' }
+          { text: 'tamanho', value: 'tamanho' },
+          { text: 'Actions', value: 'actions', sortable: false }
         ]
     }),
 
@@ -129,6 +152,11 @@
       async salvarProdutos() {
         this.dialog = false
         ProdutoService.salvarProdutos(this.form)
+        this.listaProdutos()
+      },
+      async deletarProdutos() {
+        ProdutoService.deletarProdutos(this.form)
+        this.listaProdutos()
       }
     },
 
